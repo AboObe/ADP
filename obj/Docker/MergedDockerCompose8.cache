@@ -1,0 +1,53 @@
+name: dockercompose8653586413394797469
+services:
+  apigateway:
+    build:
+      context: C:\Users\alaan\source\repos\Maqta
+      dockerfile: ApiGateway/Dockerfile
+    container_name: api_gateway
+    image: apigateway
+    networks:
+      backend: null
+    ports:
+    - mode: ingress
+      target: 80
+      published: "8001"
+      protocol: tcp
+  employeedb:
+    container_name: employee-db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: password@12345#
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      backend: null
+    ports:
+    - mode: ingress
+      target: 1433
+      published: "18001"
+      protocol: tcp
+  employeewebapi:
+    build:
+      context: C:\Users\alaan\source\repos\Maqta
+      dockerfile: EmployeeWebApi/Dockerfile
+    container_name: employee-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DB_HOST: employeedb
+      DB_Login: alaa
+      DB_Name: MaqtaGateway
+      DB_SA_PASSWORD: password@12345#
+    image: employeewebapi
+    networks:
+      backend: null
+    ports:
+    - mode: ingress
+      target: 80
+      protocol: tcp
+    - mode: ingress
+      target: 80
+      published: "18002"
+      protocol: tcp
+networks:
+  backend:
+    name: dockercompose8653586413394797469_backend

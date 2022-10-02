@@ -1,0 +1,51 @@
+version: '3.4'
+
+networks:
+  backend:
+
+services:
+  employeedb:
+    container_name: employee-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=password@12345#
+    networks:
+        - backend
+    ports:
+        - 18001:1433
+  employeewebapi:
+    container_name: employee-api
+    image: ${DOCKER_REGISTRY-}employeewebapi
+    build:
+      context: .
+      dockerfile: EmployeeWebApi/Dockerfile
+    networks:
+        - backend
+    ports:
+        - 18002:80
+    environment:
+        - DB_HOST=employeedb
+        - DB_Name=MaqtaGateway
+        - DB_Login=alaa
+        - DB_SA_PASSWORD=password@12345#
+  apigateway:
+        container_name: api_gateway
+        image: ${DOCKER_REGISTRY-}apigateway
+        build:
+            context: .
+            dockerfile: ApiGateway/Dockerfile
+        ports:
+            - 8001:80
+        networks:
+            - backend
+
+  authenticationwebapi:
+    container_name: authentication-api
+    image: ${DOCKER_REGISTRY-}authenticationwebapi
+    build:
+      context: .
+      dockerfile: AuthenticationWebApi/Dockerfile
+    networks:
+            - backend
+

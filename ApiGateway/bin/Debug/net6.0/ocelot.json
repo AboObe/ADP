@@ -1,0 +1,45 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/Employee",
+      "UpstreamHttpMethod": [ "GET", "Post", "Put" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationwebapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Employee"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Employee",
+      "UpstreamHttpMethod": [ "GET", "Post", "Put" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "employeewebapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Employee"
+    },
+    {
+      "UpstreamPathTemplate": "/api/Employee/{employeeId}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "employeewebapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Employee/{employeeId}"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl":  "http://localhost:800"
+  }
+
+
+}
